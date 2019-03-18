@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tw">
 <head>
-    <title>暨大通知</title>
+    <title>建宇通知</title>
     <link rel='icon' href='https://moli.rocks/favicon.ico' />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,7 +56,7 @@
 @else
     <h2>點擊按鈕後，選取「透過1對1聊天接收LINE Notify的通知」，並且同意連動</h2>
     <p>切勿重複申請，會造成同樣訊息多次收到。</p>
-    <button class="button button1" onclick="oAuth2();"> 點此申請暨大通知 LINE Notify</button>
+    <button class="button button1" onclick="oAuth2();"> 點此申請建宇的 LINE Notify</button>
 @endif
 </body>
 </html>

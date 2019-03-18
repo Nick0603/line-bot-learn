@@ -73,7 +73,7 @@ class LINENotifyController extends Controller
             try {
                 $response = $client->request('POST', 'https://notify-bot.line.me/oauth/token', [
                     'headers' => [
-                        'User-Agent' => 'MOLi Bot',
+                        'User-Agent' => 'nick03008',
                         'cache-control' => 'no-cache',
                     ],
                     'form_params' => [
@@ -105,7 +105,7 @@ class LINENotifyController extends Controller
             }
             // send a welcome message
             try {
-                $msg = "\n歡迎使用暨大通知，此服務由 MOLi 實驗室維護\n如有疑問可至粉專或群組詢問\nhttps://moli.rocks";
+                $msg = "\n歡迎使用建宇的小推播服務，可以用此連結推薦給別人哦\nhttps://line-bot-nick03008.herokuapp.com/line-notify-auth";
                 $this->sendMsg($access_token, $msg);
             } catch (\Exception $e) {
                 return $e->getCode();

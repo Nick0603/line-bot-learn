@@ -40,8 +40,6 @@ class LineNotify extends Command
      */
     public function handle()
     {
-        $this->line('test');
-
         $users = LINE_Notify_User::getAllToken(); // LINE Notify Users
         $msg = 'test';
         foreach ($users as $key => $at) {
@@ -51,7 +49,5 @@ class LineNotify extends Command
                 sleep(62);
             }
         }
-
-
     }
 }
