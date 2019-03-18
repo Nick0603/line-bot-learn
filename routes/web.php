@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/line-notify-auth', 'LINENotifyController@auth')->name('line_notify_auth');
