@@ -16,3 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/line-notify-auth', 'LINENotifyController@auth')->name('line_notify_auth');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

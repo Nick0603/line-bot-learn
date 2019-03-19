@@ -14,7 +14,7 @@ class LineNotify extends Command
      *
      * @var string
      */
-    protected $signature = 'line:push';
+    protected $signature = 'line:push {msg}';
 
     /**
      * The console command description.
@@ -40,8 +40,11 @@ class LineNotify extends Command
      */
     public function handle()
     {
+        $msg = $this->argument('msg');
+        if(empty($msg)){
+            $msg = '測試';
+        }
         $users = LINE_Notify_User::getAllToken(); // LINE Notify Users
-        $msg = 'test';
         foreach ($users as $key => $at) {
             LINENotifyController::sendMsg($at, $msg);
             // LINE 限制一分鐘上限 1000 次，做一些保留次數
