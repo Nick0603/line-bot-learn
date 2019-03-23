@@ -3,22 +3,24 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Services\PushNotification;
 
-class SetPushNotification extends Command
+class CheckPushNotification extends Command
 {
+    private $push_service;
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'push:tmp';
+    protected $signature = 'push:notification {method}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'method : checkPushSchedule,checkPushList,checkTmp';
 
     /**
      * Create a new command instance.
@@ -28,6 +30,7 @@ class SetPushNotification extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->push_service = new PushNotification();
     }
 
     /**
@@ -37,14 +40,18 @@ class SetPushNotification extends Command
      */
     public function handle()
     {
-
-        $users = LINE_Notify_User::getAllToken(); // LINE Notify Users
-        foreach ($users as $key => $at) {
-            LINENotifyController::sendMsg($at, $msg);
-            // LINE 限制一分鐘上限 1000 次，做一些保留次數
-            if (($key + 1) % 950 == 0) {
-                sleep(62);
-            }
+        $method = $this->argument('method');
+        if( $method == 'checkPushSchedule'){
+            $this->line('checkPushSchedule');
+            $this->push_service->checkPushSchedule();
+        }else if( $method == 'checkPushList'){
+            $this->line('checkPushList');
+            $this->push_service->checkPushList();
+        }else if( $method == 'checkPushTmp'){
+            $this->line('checkTmp');
+            $this->push_service->checkPushTmp();
+        }else{
+            $this->line('no match any method');
         }
     }
 }

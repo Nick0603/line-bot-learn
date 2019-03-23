@@ -15,9 +15,13 @@ class CreatePushSchedule extends Migration
     {
         Schema::create('push_schedule', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('status', ['未發送', '處理中','已處理']);
+            $table->time('generator_time');
+            $table->dateTime('last_generator_at');
+            $table->enum('status', ['未產生', '處理中','已產生']);
+            $table->enum('active_status',['關閉中','啟動中']);
             $table->string('push_msg');
-            $table->dateTime('push_at');
+            $table->time('push_time_at');
+            $table->integer('push_line_id');
             $table->timestamps();
         });
     }
