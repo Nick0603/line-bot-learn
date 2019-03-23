@@ -12,57 +12,16 @@ class LINENotifyController extends Controller
     private $redirect_uri;
     private $client_id;
     private $client_secret;
-    public function __construct()
+    private $push_service;
+    public function __construct(\App\Services\PushNotification $push_service)
     {
         $this->redirect_uri = \Config::get('line.line_notify_redirect_uri');
         $this->client_id = \Config::get('line.line_notify_client_id');
         $this->client_secret = \Config::get('line.line_notify_client_secret');
+        $this->push_service = $push_service;
     }
-    public static function sendMsg($access_token, $msg)
-    {
-        $client = new GuzzleHttpClient();
-        try {
-            $response = $client->request('POST', 'https://notify-api.line.me/api/notify', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $access_token,
-                ],
-                'form_params' => [
-                    'message' => $msg,
-                ],
-                'timeout' => 10,
-            ]);
-        } catch (GuzzleHttpTransferException $e) {
-            $status = $e->getCode();
-            if ($status == 400) {
-                throw new \Exception('400 - Unauthorized request');
-            } elseif ($status == 401) {
-                throw new \Exception('401 -  Invalid access token');
-            } elseif ($status == 500) {
-                throw new \Exception('500 - Failure due to server error');
-            } else {
-                throw new \Exception('Processed over time or stopped');
-            }
-        }
-        return $response;
-    }
-    public function getStatus($access_token)
-    {
-        $client = new GuzzleHttpClient();
-        try {
-            $response = $client->request('GET', 'https://notify-api.line.me/api/status', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $access_token,
-                ],
-                'timeout' => 10,
-            ]);
-            $response = $response->getBody()->getContents();
-            $formatter = Formatter::make($response, Formatter::JSON);
-            $json = $formatter->toArray();
-            return $json;
-        } catch (GuzzleHttpTransferException $e) {
-            return $e;
-        }
-    }
+
+
     public function auth(Request $request)
     {
         $code = $request->query('code', false);
@@ -106,13 +65,13 @@ class LINENotifyController extends Controller
             // send a welcome message
             try {
                 $msg = "\n歡迎使用建宇的小推播服務，可以用此連結推薦給別人哦\nhttps://line-bot-nick03008.herokuapp.com/line-notify-auth";
-                $this->sendMsg($access_token, $msg);
+                $this->push_service->sendMsg($access_token, $msg);
             } catch (\Exception $e) {
                 return $e->getCode();
             }
             // get status
             try {
-                $json = $this->getStatus($access_token);
+                $json = $this->push_service->getStatus($access_token);
                 LINE_Notify_User::where('access_token', $access_token)
                     ->update([
                         'targetType' => $json['targetType'],
