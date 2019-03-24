@@ -81,7 +81,7 @@ class PushNotification
             $collection = $query->select('id','push_msg','push_time_at','push_line_id')->get();
             PushSchedule::whereIn('id',$collection->pluck('id'))->update([
                 'status'=>2,
-                'generator_time' => Carbon::now()
+                'ast_generator_at' => Carbon::now()
             ]);
             $collection->map(function ($push_schedule) {
                 PushList::create([
