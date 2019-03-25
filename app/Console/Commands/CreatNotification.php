@@ -43,6 +43,6 @@ class CreatNotification extends Command
     public function handle()
     {
         $this->dynamic_notification_service->createCountEndDateNoficaition();
-
+        $this->dynamic_notification_service->createQuestionNoficaition();
     }
 }

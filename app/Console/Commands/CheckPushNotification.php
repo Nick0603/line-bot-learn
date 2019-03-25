@@ -20,7 +20,7 @@ class CheckPushNotification extends Command
      *
      * @var string
      */
-    protected $description = 'method : checkPushSchedule,checkPushList,checkTmp';
+    protected $description = 'method : checkPushSchedule,checkPushList,checkPushTmp';
 
     /**
      * Create a new command instance.
@@ -48,7 +48,7 @@ class CheckPushNotification extends Command
             $this->line('checkPushList');
             $this->push_service->checkPushList();
         }else if( $method == 'checkPushTmp'){
-            $this->line('checkTmp');
+            $this->line('checkPushTmp');
             $this->push_service->checkPushTmp();
         }else{
             $this->line('no match any method');
