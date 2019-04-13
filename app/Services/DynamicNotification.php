@@ -8,7 +8,7 @@ class DynamicNotification
 {
     public function createCountEndDateNoficaition(){
         $start_date = Carbon::parse('2019/3/26');
-        $end_date = Carbon::parse('2019/7/25');
+        $end_date = Carbon::parse('2019/7/15');
         $today = Carbon::now()->startOfDay();
         if( PushList::where([
             ['push_at','>',Carbon::now()->startOfDay()],
@@ -23,7 +23,7 @@ class DynamicNotification
             $greet_arr = Config::get('constants.good_morning_greet_arr');
 
             $greet_str = $greet_arr[ rand(0, count($greet_arr)-1)];
-            $msg = $greet_str.'，今天是阿宇當兵的第 '.$count_start.'天，也是距離我們養貓計畫倒數的第 '.$count_end.' 天哦！';
+            $msg = $greet_str.'，今天是阿宇當兵的第 '.$count_start.'天，也是距離我們養貓計畫倒數的第 '.$count_end.' 天哦！(已經確認囉~)';
             PushList::create([
                 'push_schedule_id' => 0,
                 'push_line_id' => 1,
