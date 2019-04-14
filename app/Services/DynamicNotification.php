@@ -49,7 +49,11 @@ class DynamicNotification
         };
         $greet_arr = Config::get('constants.question_greet_arr');
         $greet_str = $greet_arr[ rand(0, count($greet_arr)-1)];
-        $data = Config::get('constants.daily_questions')[$today_date_str];
+        $question_arr = Config::get('constants.daily_questions');
+        if(!array_key_exists($today_date_str,$question_arr)){
+            return False;
+        }
+        $data = $question_arr[$today_date_str];
         $question_msg = $greet_str.'，來個小猜謎放鬆一下吧(我將在幾分鐘後跟你說答案哦~ )： '.$data['question'];
         PushList::create([
             'push_schedule_id' => 0,
@@ -66,6 +70,40 @@ class DynamicNotification
             'status' => 1,
             'push_msg' => $answer_msg,
             'push_at' => Carbon::now()->setTime(15, 20, 0),
+        ]);
+    }
+
+    public function createHitOnYouNoficaition(){
+        $today = Carbon::now()->startOfDay();
+        $today_date_str = $today->toDateString();
+        if( PushList::where([
+            ['push_at','>',Carbon::now()->startOfDay()],
+            ['push_line_id','1'],
+            ['push_msg','like',"%嘿，冠樺 %"]
+        ])->exists()){
+            return False;
+        };
+        $question_arr = Config::get('constants.hit_on_arr');
+        if(!array_key_exists($today_date_str,$question_arr)){
+            return False;
+        }
+        $data = $question_arr[$today_date_str];
+        $question_msg = '嘿，冠樺 '.$data['question'];
+        PushList::create([
+            'push_schedule_id' => 0,
+            'push_line_id' => 1,
+            'status' => 1,
+            'push_msg' => $question_msg,
+            'push_at' => Carbon::now()->setTime(18, 0, 0),
+        ]);
+
+        $answer_msg = $data['answer'];
+        PushList::create([
+            'push_schedule_id' => 0,
+            'push_line_id' => 1,
+            'status' => 1,
+            'push_msg' => $answer_msg,
+            'push_at' => Carbon::now()->setTime(18, 0, 30),
         ]);
     }
 }

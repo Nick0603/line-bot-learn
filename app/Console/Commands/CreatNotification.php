@@ -44,5 +44,6 @@ class CreatNotification extends Command
     {
         $this->dynamic_notification_service->createCountEndDateNoficaition();
         $this->dynamic_notification_service->createQuestionNoficaition();
+        $this->dynamic_notification_service->createHitOnYouNoficaition();
     }
 }
