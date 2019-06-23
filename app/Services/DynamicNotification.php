@@ -8,7 +8,7 @@ class DynamicNotification
 {
     public function createCountEndDateNoficaition(){
         $start_date = Carbon::parse('2019/3/26');
-        $end_date = Carbon::parse('2019/7/15');
+        $end_date = Carbon::parse('2019/7/10');
         $today = Carbon::now()->startOfDay();
         if( PushList::where([
             ['push_at','>',Carbon::now()->startOfDay()],
